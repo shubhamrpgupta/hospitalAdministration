@@ -1,3 +1,9 @@
+if (process.env.NODE_ENV !== "production") {
+    require('dotenv').config();
+}
+
+
+
 const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
@@ -7,13 +13,20 @@ const catchAsyncError = require("./middleware/catchAsyncError");
 
 const app = express();
 
-const MongoDbUrl = 'mongodb://127.0.0.1:27017/patientInfo';
+const MongoDbUrl = process.env.MONGO_DB_URL || 'mongodb://127.0.0.1:27017/patientInfo';
 
 main().catch(err => console.log(`Mongo ERROR, ${err}`));
 async function main() {
     await mongoose.connect(MongoDbUrl);
     console.log("MONGO CONNECTION OPEN!!")
 }
+
+
+
+
+
+
+
 
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.json());
